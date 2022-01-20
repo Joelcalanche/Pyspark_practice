@@ -1,0 +1,35 @@
+psql -U postgres
+
+\list
+\c database_name
+\dt
+
+
+Para crear Store procedures
+
+estos se crean en el postgres shell no desde python
+
+red30=# CREATE OR REPLACE PROCEDURE return_nondiscounted_item(INT,INT)
+red30-# LANGUAGE plpgsql
+red30-# AS $$
+red30$# BEGIN
+red30$# UPDATE sales
+red30$# SET quantity = quantity -$2, order_total = order_total - price * $2
+red30$# WHERE order_num = $1 AND discount = 0;
+red30$# COMMIT;
+red30$# END;
+red30$# $$;
+CREATE PROCEDURE
+
+CALL return_nondiscounted_item(1, 2);
+
+basicamente los store procedures son funciones
+
+
+
+
+configuracion recomendada para leer datos desde una base de datos con pandas
+
+pd.read_sql_table("salespersn", con=engine, index_col="id", coerce_float=True, columns=['id', 'city', 'state'], parse_dates= ['datesColumn'], chunksize=250) # 250 record por vez
+
+pd.read_sql("SELECT * from sadad", conn=engine)
